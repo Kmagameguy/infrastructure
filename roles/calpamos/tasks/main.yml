@@ -1,0 +1,8 @@
+---
+
+- name: update docker services
+  become: true
+  shell:
+    chdir: "{{ calpamos_docker_path }}"
+    cmd: "{{ docker_update_command }}"
+  tags: docker

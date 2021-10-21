@@ -1,0 +1,9 @@
+---
+
+- name: update all packages
+  become: true
+  apt:
+    update_cache: yes
+    upgrade: 'full'
+    autoremove: yes
+  tags: update

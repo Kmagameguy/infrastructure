@@ -1,0 +1,24 @@
+---
+
+- name: create docker configuration directories
+  file:
+    path: "~/appdata/{{ item }}"
+    state: directory
+    recurse: yes
+  loop:
+    - jellyfin
+    - kiwix
+    - mariadb
+    - podgrab
+    - diun
+    - scrutiny
+    - freshrss
+    - uptime-kuma
+  tags: compose
+
+- name: update docker services
+  become: true
+  shell:
+    chdir: "{{ matrix_docker_path }}"
+    cmd: "{{ docker_update_command }}"
+  tags: docker
