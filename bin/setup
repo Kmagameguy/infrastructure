@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Installs a pre-commit hook that ensures
+# our secrets vault is encrypted. If not, the commit
+# will fail.
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+./scripts/git-init.sh
+
+read -p "Enter Ansible-Vault Password: " pass
+if [ -f .vault-password ]; then
+  rm .vault-password
+fi
+
+cat <<EOT >> .vault-password
+$pass
+EOT
+
+chmod 0600 .vault-password
