@@ -8,4 +8,5 @@ cd "$(dirname "$0")/.."
 
 sudo echo ""
 
+sudo apt install python3
 sudo apt install ansible -y
