@@ -1,4 +1,8 @@
 ---
+
+remote_user: "{{ matrix_user }}"
+ansible_become_pass: "{{ matrix_become_password }}"
+
 docker_users:
   - "{{ matrix_user }}"
 

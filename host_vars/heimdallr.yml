@@ -1,0 +1,4 @@
+---
+
+remote_user: "{{ heimdallr_user }}"
+ansible_become_pass: "{{ heimdallr_become_password }}"

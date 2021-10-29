@@ -1,14 +1,10 @@
-[calpamos]
-192.168.2.67
+[servers]
+calpamos
+carthonasi
+gatekeeper
+heimdallr
+matrix
 
-[carthonasi]
-192.168.2.50
-
-[gatekeeper]
-192.168.2.42
-
-[heimdallr]
-192.168.2.69
-
-[matrix]
-192.168.2.90
+[docker]
+calpamos
+matrix

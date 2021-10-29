@@ -1,49 +1,24 @@
 ---
-- hosts: calpamos
-  remote_user: "{{ calpamos_user }}"
+# Update All 
+- hosts: all
   vars_files:
     - 'vars/vault.yml'
-  vars:
-    ansible_become_pass: "{{ calpamos_become_password }}"
   roles:
     - role: base
+      tags: update
+
+# Update Docker services on Calpamos
+- hosts: calpamos
+  vars_files:
+    - 'vars/vault.yml'
+  roles:
     - role: calpamos
 
-- hosts: carthonasi
-  remote_user: "{{ carthonasi_user }}"
-  vars_files:
-    - 'vars/vault.yml'
-  vars:
-    ansible_become_pass: "{{ carthonasi_become_password }}"
-  roles:
-    - role: base
-
-- hosts: gatekeeper
-  remote_user: "{{ gatekeeper_user }}"
-  vars_files:
-    - 'vars/vault.yml'
-  vars:
-    ansible_become_pass: "{{ gatekeeper_become_password }}"
-  roles:
-    - role: base
-
-- hosts: heimdallr
-  remote_user: "{{ heimdallr_user }}"
-  vars_files:
-    - 'vars/vault.yml'
-  vars:
-    ansible_become_pass: "{{ heimdallr_become_password }}"
-  roles:
-    - role: base
-
+# Update Docker services on Matrix
 - hosts: matrix
-  remote_user: "{{ matrix_user }}"
   vars_files:
     - 'vars/vault.yml'
-  vars:
-    ansible_become_pass: "{{ matrix_become_password }}"
   roles:
-    - role: base
     - role: matrix
     - role: ironicbadger.ansible_role_docker_compose_generator
       tags: compose

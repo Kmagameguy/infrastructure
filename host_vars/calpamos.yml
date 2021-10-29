@@ -1,0 +1,4 @@
+---
+
+remote_user: "{{ calpamos_user }}"
+ansible_become_pass: "{{ calpamos_become_password }}"

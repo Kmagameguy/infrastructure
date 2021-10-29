@@ -1,0 +1,4 @@
+---
+
+remote_user: "{{ gatekeeper_user }}"
+ansible_become_pass: "{{ gatekeeper_become_password }}"
