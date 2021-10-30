@@ -128,4 +128,3 @@ containers:
     ports:
       - "{{ secret_uptime_kuma_host_port }}:{{ secret_uptime_kuma_client_port }}"
     restart: unless-stopped
-    
