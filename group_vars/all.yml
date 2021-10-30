@@ -7,4 +7,8 @@ global_env_vars:
   - "PGID={{ main_gid }}"
   - "TZ={{ main_tzone }}"
 
-docker_update_command: docker-compose pull && docker-compose down && docker-compose up --force-recreate -d && docker system prune -af
+docker_update_command: >
+  docker-compose pull &&
+  docker-compose down &&
+  docker-compose up --force-recreate -d &&
+  docker system prune -af

@@ -1,5 +1,5 @@
 ---
-# Update All 
+# Update All
 - hosts: all
   vars_files:
     - 'vars/vault.yml'

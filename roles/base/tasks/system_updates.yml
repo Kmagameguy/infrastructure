@@ -11,5 +11,5 @@
   become: true
   apt:
     upgrade: 'full'
-    autoremove: yes
+    autoremove: true
   tags: update

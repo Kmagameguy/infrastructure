@@ -30,7 +30,7 @@ containers:
       - "{{ data_root_dir }}/Music/Library:/data/music"
       - "{{ data_root_dir}}/InternetRadio:/data/internetradio"
     restart: unless-stopped
-###
+  ###
   - service_name: podgrab
     container_name: podgrab
     image: akhilrex/podgrab
@@ -43,7 +43,7 @@ containers:
     volumes:
       - "{{ appdata_path }}/podgrab:/config"
       - "{{ data_root_dir}}/InternetRadio:/assets"
-###
+  ###
   - service_name: diun
     container_name: diun
     image: crazymax/diun:latest
@@ -61,7 +61,7 @@ containers:
       - "{{ diun_notif }}"
       - "{{ diun_msg }}"
     restart: unless-stopped
-###
+  ###
   - service_name: scrutiny
     container_name: scrutiny
     image: ghcr.io/linuxserver/scrutiny
@@ -81,7 +81,7 @@ containers:
       - "{{ secret_scrutiny_host_port }}:{{ secret_scrutiny_client_port }}"
     devices: "{{ matrix_all_disks }}"
     restart: unless-stopped
-###
+  ###
   - service_name: freshrss
     container_name: freshrss
     image: linuxserver/freshrss:latest
@@ -94,7 +94,7 @@ containers:
     ports:
       - "{{ secret_freshrss_host_port }}:{{ secret_freshrss_client_port }}"
     restart: unless-stopped
-###
+  ###
   - service_name: mariadb
     container_name: mariadb
     image: linuxserver/mariadb:latest
@@ -106,7 +106,7 @@ containers:
     ports:
       - "{{ secret_mysql_host_port }}:{{ secret_mysql_client_port}}"
     restart: unless-stopped
-###
+  ###
   - service_name: kiwix
     container_name: kiwix
     image: kiwix/kiwix-serve
@@ -118,7 +118,7 @@ containers:
     ports:
       - "{{ secret_kiwix_host_port }}:{{ secret_kiwix_client_port}}"
     restart: unless-stopped
-###
+  ###
   - service_name: uptime-kuma
     container_name: uptime-kuma
     image: louislam/uptime-kuma:latest
