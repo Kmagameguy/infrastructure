@@ -8,5 +8,5 @@ cd "$(dirname "$0")/.."
 
 sudo echo ""
 
-sudo apt install python3 -y
-sudo apt install ansible -y
+sudo apt install python3 python3-pip ansible -y
+sudo pip install yamllint ansible-lint
