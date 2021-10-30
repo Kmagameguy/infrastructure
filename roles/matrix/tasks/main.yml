@@ -15,10 +15,3 @@
     - freshrss
     - uptime-kuma
   tags: compose
-
-- name: update docker services
-  become: true
-  shell:
-    chdir: "{{ matrix_docker_path }}"
-    cmd: "{{ docker_update_command }}"
-  tags: docker

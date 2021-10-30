@@ -7,18 +7,18 @@
     - role: base
       tags: update
 
-# Update Docker services on Calpamos
-- hosts: calpamos
+# Update Docker services
+- hosts: docker
   vars_files:
     - 'vars/vault.yml'
   roles:
-    - role: calpamos
+    - role: docker
+      tags: docker
 
-# Update Docker services on Matrix
+# Deploy Docker services on Matrix
 - hosts: matrix
   vars_files:
     - 'vars/vault.yml'
   roles:
-    - role: matrix
     - role: ironicbadger.ansible_role_docker_compose_generator
       tags: compose
