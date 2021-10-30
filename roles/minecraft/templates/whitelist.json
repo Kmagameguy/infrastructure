@@ -1,0 +1,6 @@
+[
+  {
+    "uuid": "{{ mc_uuid }}",
+    "name": "{{ mc_uname }}"
+  }
+]

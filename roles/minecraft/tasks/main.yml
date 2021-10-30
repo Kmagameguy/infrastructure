@@ -1,0 +1,35 @@
+---
+
+- name: ensure dependencies are installed
+  become: true
+  package:
+    name:
+      - software-properties-common
+      - screen
+      - openjdk-16-jdk-headless
+    state: present
+
+- name: copy minecraft server config templates in place.
+  template:
+    src: "{{ item }}"
+    dest: "~/{{ mc_dir }}/"
+  loop:
+    - 'ops.json'
+    - 'server'
+    - 'server.properties'
+    - 'whitelist.json'
+
+- name: copy minecraft static files in place.
+  copy:
+    src: "{{ item }}"
+    dest: "~/{{ mc_dir }}/"
+  loop:
+    - 'banned-ips.json'
+    - 'banned-players.json'
+    - 'eula.txt'
+
+- name: copy minecraft server administration script in place.
+  template:
+    src: server
+    dest: "~/{{ mc_dir }}/"
+    mode: a+x

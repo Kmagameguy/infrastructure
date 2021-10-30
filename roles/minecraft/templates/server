@@ -1,0 +1,198 @@
+#!/bin/bash
+
+print_error() {
+  local error="${1}"
+  printf "${error} is not a valid argument.\n"
+}
+
+logmsg() {
+  local log_file_dir="{{ data_root_dir }}/minecraft_server_backup"
+  local log_file=backup_log.log
+
+  if [ ! -d $log_file_dir ]; then
+    mkdir -p $log_file_dir
+  fi
+
+  if [ -n "$1" ]; then
+    IN="$1"
+  else
+    read IN
+  fi
+
+  if [ -n "$IN" ]; then
+    echo"`date +"%Y-%m-%d %H:%M:%S"` mcbackup[$$]: $IN" >> "$log_file_dir/$log_file"
+  fi
+}
+
+show_usage_information() {
+  local invalid_option="${1}"
+
+  if [ -n "${invalid_option}" ]; then
+    print_error "${invalid_option}"
+  fi
+
+  printf "Usage: Manage the local minecraft server\n"
+    printf "    status:  reports whether the server is active\n"
+    printf "    start:   start the server\n"
+    printf "    stop:    stop the server\n"
+    printf "    restart: restart the server\n"
+    printf "    backup:  backup server data. WARNING: stop server first!!!\n"
+    printf "    update:  update the server. WARNING: stop server first!!!\n"
+    printf "    help:    displays this message.\n"
+}
+
+server_status() {
+  local server_screen_name="minecraft-server"
+
+  if ! screen -list | grep -q "${server_screen_name}"; then
+    echo "Server is down."
+  else
+    echo "Server is up."
+  fi
+}
+
+start_server() {
+  cd "$( dirname "$0" )"
+  local server_path="~/{{ mc_dir }}"
+  local server_jar="$(ls | grep paper-*.jar)"
+  local server_flags="-Xms4G -Xmx4G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1"
+  local server_screen_name="minecraft-server"
+  local server_stats="$(server_status)"
+
+  if [ "${server_stats}" = "Server is down." ]; then
+    printf "starting server using ${server_jar}...\n"
+    exec screen -AmdS minecraft-server java ${server_flags} -jar ${server_jar##*/} --nogui
+  else
+    printf "Error: Server (or its screen session) is already active!  No action taken.\n"
+  fi
+}
+
+stop_server() {
+  printf 'Stopping server...'
+
+  if screen -X -S minecraft-server -X eval "stuff \"save-all\"\015"; then
+    sleep 3
+    printf "Saved server data..."
+    if screen -X -S minecraft-server -X eval "stuff \"stop\"\015"; then
+      sleep 10
+      printf 'Server stopped.\n'
+    else
+      printf 'Something went wrong.  Server may not be running?\nTry again or use "screen -list" to view running sessions\n'
+    fi
+  else
+    printf 'Something went wrong.  Server may not be running?\nTry again or use "screen -list" to view running sessions\n'
+  fi
+}
+
+restart_server() {
+  local server_stats="$(server_status)"
+
+  if [ "${server_stats}" = "Server is up." ]; then
+    printf "Restarting server...\n"
+    stop_server
+    start_server
+  else
+    printf "Server not running. Starting it up.\n"
+    start_server
+  fi
+}
+
+backup_server() {
+  local minecraft_dir="~/{{ mc_dir }}"
+  local backup_dir="{{ data_root_dir }}/minecraft_server_backup"
+  local temp_file="${backup_dir}/mcbackup.tar"
+  local md5_sum_file="${backup_dir}/backup.md5"
+  local server_stats="$(server_status)"
+
+  if [ "${server_stats}" = "Server is down." ]; then
+    if [ ! -d "${backup_dir}" ]; then
+      mkdir -p "${backup_dir}"
+    fi
+
+    printf 'Beginning backup...\n'
+    if ! $(tar --mode="a+rw" -cf $temp_file -C $minecraft_dir . >&1 | logmsg; test ${PIPESTATUS[0]} -eq 0); then
+      rm $temp_file 2>/dev/null
+      printf "Unable to generate tar file. Aborting."
+      exit 1
+    fi
+
+    if md5sum --status -c $md5_sum_file 2>/dev/null; then
+      printf "No changes detected since last backup. Skipping.\n"
+    else
+      md5sum $temp_file > $md5_sum_file
+      if ! $(gzip -fq $temp_file 2>&1 | logmsg; test ${PIPESTATUS[0]} -eq 0); then
+        rm $temp_file 2>/dev/null
+        printf "Unable to generate gzip file. Aborting."
+        exit 1
+      else
+        printf "Done.\n"
+      fi
+    fi
+  else
+    printf "Error: Server is running. No action taken.\n"
+  fi
+}
+
+update_server() {
+  local PAPERMC_VERSION="1.17.1"
+  local PAPERMC_URL="https://papermc.io/api/v1/paper/${PAPERMC_VERSION}/latest/download"
+  local server_jar="$(ls | grep paper-*.jar)"
+  local SERVER_BACKUP_FOLDER="./server_backups"
+  local server_stats="$(server_status)"
+
+  if [ "${server_stats}" = "Server is down." ]; then
+
+    if [ ! -d "${SERVER_BACKUP_FOLDER}" ]; then
+      printf "Creating backup folder...\n"
+      mkdir -p "${SERVER_BACKUP_FOLDER}"
+    fi
+
+    printf "Backing up current server file...\n"
+    mv "${server_jar}" "${SERVER_BACKUP_FOLDER}/"
+
+    printf "Downloading latest version of papermc..."
+    if wget --trust-server-names --content-disposition "${PAPERMC_URL}"; then
+      printf "done\n"
+    else
+      printf "Error retrieving server file. Try again.\n"
+    fi
+  else
+    printf "Error: Server is running. No action taken.\n"
+  fi
+}
+
+main() {
+  local script_arg="${1}"
+  if [ -z "${script_arg}" ]; then
+    show_usage_information
+  else
+    case "${script_arg}" in
+      status)
+        server_status
+        ;;
+      start)
+        start_server
+        ;;
+      stop)
+        stop_server
+        ;;
+      restart)
+        restart_server
+        ;;
+      backup)
+        backup_server
+        ;;
+      update)
+        update_server
+        ;;
+      help)
+        show_usage_information
+        ;;
+      *)
+        show_usage_information "${script_arg}"
+        ;;
+    esac
+  fi
+}
+
+main "${@}"
