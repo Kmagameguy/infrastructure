@@ -1,0 +1,15 @@
+---
+
+- name: create docker configuration directories
+  file:
+    path: "~/appdata/{{ item }}"
+    state: directory
+    recurse: true
+  loop:
+    - jellyfin
+    - mariadb
+    - podgrab
+    - diun
+    - scrutiny
+    - freshrss
+    - uptime-kuma

@@ -15,6 +15,16 @@
     - role: docker
       tags: docker
 
+# Deploy Docker services on Calpamos
+- hosts: calpamos
+  vars_files:
+    - 'vars/vault.yml'
+  roles:
+    - role: calpamos
+      tags: compose
+    - role: ironicbadger.ansible_role_docker_compose_generator
+      tags: compose
+
 # Deploy Docker services on Matrix
 - hosts: matrix
   vars_files:

@@ -1,0 +1,13 @@
+---
+
+- name: create docker configuration directories
+  file:
+    path: "~/appdata/{{ item }}"
+    state: directory
+    recurse: true
+  loop:
+    - homeassistant
+    - homer
+    - diun
+    - gitea
+    - postgresql

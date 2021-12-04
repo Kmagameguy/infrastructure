@@ -3,5 +3,5 @@
 - name: update docker services
   become: true
   shell:
-    chdir: "{{ docker_path }}"
+    chdir: "/home/{{ remote_user }}/"
     cmd: "{{ docker_update_command }}"
