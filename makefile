@@ -4,6 +4,14 @@ decrypt:
 encrypt:
 	ansible-vault encrypt vars/vault.yml
 
+lint-all: ansiblelint yamllint
+
+ansiblelint:
+	ansible-lint .
+
+yamllint:
+	yamllint .
+
 update-all:
 	ansible-playbook run.yml --tags update
 
