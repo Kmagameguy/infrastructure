@@ -1,0 +1,24 @@
+[Unit]
+Description=Minecraft Server
+Documentation=
+
+Wants=network.target
+After=network.target
+
+[Service]
+WorkingDirectory=/home/{{ remote_user }}/{{ mc_dir }}
+Type=forking
+
+User={{ remote_user }}
+Group={{ remote_user }}
+Nice=5
+KillMode=none
+SuccessExitStatus=0 1
+
+Restart=always
+
+ExecStart=/home/{{ remote_user }}/{{ mc_dir }}/server start
+ExecStop=/home/{{ remote_user }}/{{ mc_dir }}/server stop
+
+[Install]
+WantedBy=multi-user.target

@@ -33,3 +33,17 @@
     src: server
     dest: "~/{{ mc_dir }}/"
     mode: a+x
+
+- name: copy systemd service config in place.
+  become: true
+  template:
+    src: minecraft.service
+    dest: "/etc/systemd/system/"
+
+- name: start & enable the minecraft service.
+  become: true
+  ansible.builtin.systemd:
+    name: minecraft
+    state: started
+    daemon_reload: yes
+    enabled: yes
