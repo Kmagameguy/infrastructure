@@ -31,7 +31,13 @@
     - 'vars/vault.yml'
   roles:
     - role: matrix
-    - role: minecraft
-      tags: minecraft
     - role: ironicbadger.ansible_role_docker_compose_generator
       tags: compose
+
+# Deploy Minecraft Server
+- hosts: matrix
+  vars_files:
+    - 'vars/vault.yml'
+  roles:
+    - role: minecraft
+      tags: minecraft

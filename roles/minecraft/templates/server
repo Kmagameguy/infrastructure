@@ -55,6 +55,13 @@ start_server() {
   cd "$( dirname "$0" )"
   local server_path="~/{{ mc_dir }}"
   local server_jar="$(ls | grep paper-*.jar)"
+
+  if [ -z "${server_jar}" ]; then
+    printf "error: no server file found. Downloading latest."
+    update_server
+  fi
+
+  server_jar="$(ls | grep paper-*.jar)"
   local server_flags="-Xms4G -Xmx4G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1"
   local server_screen_name="minecraft-server"
   local server_stats="$(server_status)"
@@ -134,8 +141,11 @@ backup_server() {
 }
 
 update_server() {
+  # PaperMC's API sucks now so we have to manually specify version & build IDs unless we convert this
+  # To something that can more easily parse the REST data like python or node. SMH
   local PAPERMC_VERSION="1.17.1"
-  local PAPERMC_URL="https://papermc.io/api/v1/paper/${PAPERMC_VERSION}/latest/download"
+  local PAPERMC_BUILD="391"
+  local PAPERMC_URL="https://papermc.io/api/v2/projects/paper/versions/${PAPERMC_VERSION}/builds/${PAPERMC_BUILD}/downloads/paper-${PAPERMC_VERSION}-${PAPERMC_BUILD}.jar"
   local server_jar="$(ls | grep paper-*.jar)"
   local SERVER_BACKUP_FOLDER="./server_backups"
   local server_stats="$(server_status)"
@@ -147,8 +157,10 @@ update_server() {
       mkdir -p "${SERVER_BACKUP_FOLDER}"
     fi
 
-    printf "Backing up current server file...\n"
-    mv "${server_jar}" "${SERVER_BACKUP_FOLDER}/"
+    if [ ! -z "${server_jar}" ]; then
+      printf "Backing up current server file...\n"
+      mv "${server_jar}" "${SERVER_BACKUP_FOLDER}/"
+    fi
 
     printf "Downloading latest version of papermc..."
     if wget --trust-server-names --content-disposition "${PAPERMC_URL}"; then
