@@ -45,5 +45,5 @@
   ansible.builtin.systemd:
     name: minecraft
     state: started
-    daemon_reload: yes
-    enabled: yes
+    daemon_reload: true
+    enabled: true
