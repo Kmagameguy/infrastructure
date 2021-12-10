@@ -5,11 +5,19 @@
   apt:
     update_cache: true
     cache_valid_time: 3600
-  tags: update
 
 - name: update all packages
   become: true
   apt:
     upgrade: 'full'
     autoremove: true
-  tags: update
+
+- name: check for presence of reboot-required file
+  stat:
+    path: /var/run/reboot-required
+  register: need_to_reboot
+
+- name: reboot if required
+  become: true
+  reboot:
+  when: need_to_reboot.stat.exists == true
