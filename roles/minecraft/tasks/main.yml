@@ -1,12 +1,18 @@
 ---
 
+- name: update apt cache
+  become: true
+  package:
+    update_cache: true
+    cache_valid_time: 3600
+
 - name: ensure dependencies are installed
   become: true
   package:
     name:
       - software-properties-common
       - screen
-      - openjdk-16-jdk-headless
+      - openjdk-17-jdk-headless
     state: present
 
 - name: copy minecraft server config templates in place.
