@@ -53,3 +53,18 @@
     state: started
     daemon_reload: true
     enabled: true
+
+- name: copy server status monitoring cron script in place.
+  become: true
+  template:
+    src: "mc-healthcheck.sh"
+    dest: "/usr/local/bin/"
+    mode: a+x
+
+- name: add server status monitor to crontab.
+  ansible.builtin.cron:
+    name: minecraft server healthcheck
+    job: "/bin/bash /usr/local/bin/mc-healthcheck.sh"
+    user: "{{ remote_user }}"
+    minute: "0"
+    state: present
