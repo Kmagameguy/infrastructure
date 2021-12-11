@@ -144,7 +144,7 @@ update_server() {
   # PaperMC's API sucks now so we have to manually specify version & build IDs unless we convert this
   # To something that can more easily parse the REST data like python or node. SMH
   local PAPERMC_VERSION="1.17.1"
-  local PAPERMC_BUILD="391"
+  local PAPERMC_BUILD="399"
   local PAPERMC_URL="https://papermc.io/api/v2/projects/paper/versions/${PAPERMC_VERSION}/builds/${PAPERMC_BUILD}/downloads/paper-${PAPERMC_VERSION}-${PAPERMC_BUILD}.jar"
   local server_jar="$(ls | grep paper-*.jar)"
   local SERVER_BACKUP_FOLDER="./server_backups"
