@@ -38,33 +38,6 @@ colors:
     card-shadow: rgba(0, 0, 0, 0.4)
     link-hover: "#ffdd57"
 
-# Optional message
-#message:
-#  url: https://b4bz.io
-#  style: "is-dark" # See https://bulma.io/documentation/components/message/#colors for styling options.
-#  title: "Demo !"
-#  icon: "fa fa-grin"
-#  content: "This is a dummy homepage demo. <br /> Find more information on <a href='https://github.com/bastienwirtz/homer'>github.com/bastienwirtz/homer</a>"
-
-# Optional navbar
-# links: [] # Allows for navbar (dark mode, layout, and search) without any links
-# links:
-#  - name: "Contribute"
-#    icon: "fab fa-github"
-#    url: "https://github.com/bastienwirtz/homer"
-#    target: "_blank" # optional html a tag target attribute
-#  - name: "Wiki"
-#    icon: "fas fa-book"
-#    url: "https://www.wikipedia.org/"
-# this will link to a second homer page that will load config from additionnal-page.yml and keep default config values as in config.yml file
-# see url field and assets/additionnal-page.yml.dist used in this example:
-#  - name: "another page!"
-#    icon: "fas fa-file-alt"
-#    url: "#additionnal-page" 
-
-# Services
-# First level array represent a group.
-# Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
 services:
   - name: "Network"
     icon: "fas fa-cloud"
@@ -143,7 +116,7 @@ services:
         subtitle: ""
         tag: "streaming"
         url: "https://www.amazon.com/gp/video/storefront/"
-        target: "_blank"      
+        target: "_blank"
       - name: "Disney+"
         logo: "assets/tools/disney.jpg"
         subtitle: ""
@@ -155,13 +128,13 @@ services:
         subtitle: ""
         tag: "streaming"
         url: "https://play.hbomax.com"
-        target: "_blank"      
+        target: "_blank"
       - name: "Hoopla"
         logo: "assets/tools/hoopla.png"
         subtitle: ""
         tag: streaming"
         url: "https://hoopladigital.com"
-        target: "_blank"     
+        target: "_blank"
       - name: "Hulu"
         logo: "assets/tools/hulu.png"
         subtitle: ""
@@ -173,13 +146,13 @@ services:
         subtitle: ""
         tag: "streaming"
         url: "{{ jellyfin_url }}"
-        target: "_blank"      
+        target: "_blank"
       - name: "Kanopy"
         logo: "assets/tools/kanopy.png"
         subtitle: ""
         tag: "streaming"
         url: "https://kanopy.com"
-        target: "_blank"      
+        target: "_blank"
       - name: "Netflix"
         logo: "assets/tools/netflix.jpg"
         subtitle: ""
@@ -191,7 +164,7 @@ services:
         subtitle: ""
         tag: "streaming"
         url: "https://peacocktv.com"
-        target: "_blank"      
+        target: "_blank"
       - name: "Plex"
         logo: "assets/tools/plex.png"
         subtitle: "Media Server"
@@ -233,7 +206,7 @@ services:
         subtitle: ""
         tag: "streaming"
         url: "https://tv.youtube.com"
-        target: "_blank"      
+        target: "_blank"
   - name: "Docs & Files"
     icon: "fas fa-file-alt"
     items:
