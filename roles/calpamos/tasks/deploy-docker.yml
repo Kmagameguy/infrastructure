@@ -11,3 +11,15 @@
     - diun
     - gitea
     - postgresql
+
+- name: deploy homer assets
+  become: true
+  copy:
+    src: "tools"
+    dest: "/home/{{ remote_user }}/appdata/homer/"
+
+- name: copy homer dashboard configuration
+  become: true
+  template:
+    src: "config.yml"
+    dest: "/home/{{ remote_user }}/appdata/homer/"
