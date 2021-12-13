@@ -1,11 +1,13 @@
 ---
 # Update All
 - hosts: all
+  become: true
   vars_files:
     - 'vars/vault.yml'
   roles:
     - role: base
-      tags: update
+    - role: restic
+  tags: update
 
 # Update Docker services
 - hosts: docker
@@ -13,7 +15,7 @@
     - 'vars/vault.yml'
   roles:
     - role: docker
-      tags: docker
+  tags: docker
 
 # Deploy Docker services on Calpamos
 - hosts: calpamos
@@ -21,9 +23,8 @@
     - 'vars/vault.yml'
   roles:
     - role: calpamos
-      tags: compose
     - role: ironicbadger.ansible_role_docker_compose_generator
-      tags: compose
+  tags: compose
 
 # Deploy Docker services on Matrix
 - hosts: matrix
@@ -32,7 +33,7 @@
   roles:
     - role: matrix
     - role: ironicbadger.ansible_role_docker_compose_generator
-      tags: compose
+  tags: compose
 
 # Deploy Minecraft Server
 - hosts: matrix
@@ -40,4 +41,4 @@
     - 'vars/vault.yml'
   roles:
     - role: minecraft
-      tags: minecraft
+  tags: minecraft

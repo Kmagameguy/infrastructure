@@ -1,0 +1,4 @@
+---
+
+restic_distro: linux_arm
+autorestic_distro: "{{ restic_distro }}"

@@ -1,0 +1,4 @@
+---
+
+restic_distro: linux_amd64
+autorestic_distro: "{{ restic_distro }}"
