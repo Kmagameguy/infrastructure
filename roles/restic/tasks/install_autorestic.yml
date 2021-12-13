@@ -1,0 +1,63 @@
+---
+
+- name: include OS-specific variables.
+  include_vars: "{{ ansible_distribution }}.yml"
+
+- name: "Check if {{ autorestic_install_path }} exists."
+  stat:
+    path: "{{ autorestic_install_path }}"
+  register: is_installed
+
+- name: Set autorestic installation status.
+  set_fact:
+    autorestic_installed: "{{ is_installed.stat.exists }}"
+
+- name: Get autorestic version.
+  shell: |
+    {{ is_installed.stat.path }} --version | \
+    grep -oP 'autorestic\ version\ \K[0-9]*\.[0-9]*\.[0-9]*'
+  register: installed_version_register
+  changed_when: false
+  when: autorestic_installed == True
+
+- name: Query GitHub API for autorestic release info.
+  uri:
+    url: "{{ autorestic_releases_api }}"
+    return_content: true
+  register: release_version_register
+
+- name: Identify latest version of autorestic.
+  set_fact:
+    autorestic_ver: "{{ release_version_register.json.tag_name|regex_replace('v') }}"
+
+- block:
+    - name: "Ensure {{ autorestic_download_directory }} does not exist."
+      file:
+        path: "{{ autorestic_download_directory }}"
+        state: absent
+
+    - name: "Create {{ autorestic_download_directory }}."
+      file:
+        path: "{{ autorestic_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: Download autorestic.
+      get_url:
+        url: "{{ autorestic_repo_url }}/v{{ autorestic_ver }}/autorestic_{{ autorestic_ver }}_{{ autorestic_distro }}.bz2"
+        dest: "{{ autorestic_download_directory }}"
+        force: true
+        owner: root
+        group: root
+        mode: +x
+
+    - name: Identify autorestic compressed file.
+      set_fact: file_name="autorestic_{{ autorestic_ver }}_{{ autorestic_distro }}.bz2"
+
+    - name: Unzip and update autorestic.
+      shell: |
+        cd {{ autorestic_download_directory }} &&
+        bzip2 -d {{ file_name }} &&
+        mv {{ file_name | regex_replace('.bz2') }} {{ autorestic_install_path }}
+
+  when: autorestic_installed == False or ( autorestic_installed == True and installed_version_register.stdout != autorestic_ver)

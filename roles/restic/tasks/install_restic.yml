@@ -1,0 +1,63 @@
+---
+
+- name: include OS-specific variables.
+  include_vars: "{{ ansible_distribution }}.yml"
+
+- name: "Check if {{ restic_install_path }} exists."
+  stat:
+    path: "{{ restic_install_path }}"
+  register: is_installed
+
+- name: Set restic installation status.
+  set_fact:
+    restic_installed: "{{ is_installed.stat.exists }}"
+
+- name: Get restic version.
+  shell: |
+    {{ is_installed.stat.path }} version | \
+    grep -oP 'restic\ \K[0-9]*\.[0-9]*\.[0-9]*'
+  register: installed_version_register
+  changed_when: false
+  when: restic_installed == True
+
+- name: Query GitHub API for restic release info.
+  uri:
+    url: "{{ restic_releases_api }}"
+    return_content: true
+  register: release_version_register
+
+- name: Identify latest version of restic.
+  set_fact:
+    restic_ver: "{{ release_version_register.json.tag_name|regex_replace('v') }}"
+
+- block:
+    - name: "Ensure {{ restic_download_directory }} does not exist."
+      file:
+        path: "{{ restic_download_directory }}"
+        state: absent
+
+    - name: "Create {{ restic_download_directory }}."
+      file:
+        path: "{{ restic_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: Download restic.
+      get_url:
+        url: "{{ restic_repo_url }}/v{{ restic_ver }}/restic_{{ restic_ver }}_{{ restic_distro }}.bz2"
+        dest: "{{ restic_download_directory }}"
+        force: true
+        owner: root
+        group: root
+        mode: +x
+
+    - name: Identify restic compressed file.
+      set_fact: file_name="restic_{{ restic_ver }}_{{ restic_distro }}.bz2"
+
+    - name: Unzip and update restic.
+      shell: |
+        cd {{ restic_download_directory }} &&
+        bzip2 -d {{ file_name }} &&
+        mv {{ file_name | regex_replace('.bz2') }} {{ restic_install_path }}
+
+  when: restic_installed == False or (restic_installed == True and installed_version_register.stdout != restic_ver )

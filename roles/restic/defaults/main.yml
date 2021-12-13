@@ -1,0 +1,15 @@
+---
+
+binfile_install_directory: /usr/local/bin
+
+restic_binary: restic
+restic_install_path: "{{ binfile_install_directory }}/{{ restic_binary }}"
+restic_download_directory: "/tmp/restic"
+restic_repo_url: "https://github.com/restic/restic/releases/download"
+restic_releases_api: "https://api.github.com/repos/restic/restic/releases/latest"
+
+autorestic_binary: autorestic
+autorestic_install_path: "{{ binfile_install_directory }}/{{ autorestic_binary }}"
+autorestic_download_directory: "/tmp/autorestic"
+autorestic_repo_url: "https://github.com/cupcakearmy/autorestic/releases/download"
+autorestic_releases_api: "https://api.github.com/repos/cupcakearmy/autorestic/releases/latest"
