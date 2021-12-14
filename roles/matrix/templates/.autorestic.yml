@@ -1,3 +1,6 @@
+---
+version: 2
+
 backends:
   hdd:
     type: local
@@ -8,18 +11,18 @@ locations:
   docker_data:
     from: "{{ appdata_path }}"
     to:
-    - hdd
+      - hdd
     cron: 33 3 * * *
     options:
       forget:
         keep-last:
-        - "5"
+          - "5"
   minecraft_data:
     from: "/home/{{ remote_user }}/{{ mc_dir }}"
     to:
-    - hdd
+      - hdd
     cron: 33 3 * * *
     options:
       forget:
         keep-last:
-        - "5"
+          - "5"
