@@ -4,6 +4,9 @@
   template:
     src: ".autorestic.yml"
     dest: "/home/{{ remote_user }}"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0600
 
 - name: schedule autorestic with cron
   ansible.builtin.cron:

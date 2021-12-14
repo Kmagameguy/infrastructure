@@ -5,6 +5,9 @@
     path: "~/appdata/{{ item }}"
     state: directory
     recurse: true
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0755
   loop:
     - jellyfin
     - mariadb
