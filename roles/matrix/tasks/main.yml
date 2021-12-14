@@ -2,4 +2,6 @@
 
 - name: deploy docker services
   include: deploy-docker.yml
-  tags: compose
+
+- name: configure autorestic
+  include: configure-autorestic.yml

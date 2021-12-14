@@ -1,0 +1,25 @@
+backends:
+  hdd:
+    type: local
+    path: "{{ matrix_restic_backup_path }}"
+    key: "{{ matrix_restic_key }}"
+
+locations:
+  docker_data:
+    from: "{{ appdata_path }}"
+    to:
+    - hdd
+    cron: 33 3 * * *
+    options:
+      forget:
+        keep-last:
+        - "5"
+  minecraft_data:
+    from: "/home/{{ remote_user }}/{{ mc_dir }}"
+    to:
+    - hdd
+    cron: 33 3 * * *
+    options:
+      forget:
+        keep-last:
+        - "5"
