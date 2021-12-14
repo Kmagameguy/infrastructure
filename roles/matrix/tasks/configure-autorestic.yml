@@ -1,0 +1,14 @@
+---
+
+- name: copy autorestic config in place.
+  template:
+    src: ".autorestic.yml"
+    dest: "/home/{{ remote_user }}"
+
+- name: schedule autorestic with cron
+  ansible.builtin.cron:
+    name: autorestic backup
+    job: "/usr/local/bin/autorestic --ci cron"
+    user: "{{ remote_user }}"
+    minute: "33"
+    hour: "3"
