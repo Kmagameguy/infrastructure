@@ -1,0 +1,18 @@
+---
+
+- name: "Copy yt-dlp config in place."
+  template:
+    src: "archive-web-videos.sh"
+    dest: "{{ binfile_install_directory }}"
+    owner: root
+    group: root
+    mode: +x
+
+- name: "Schedule yt-dlp with cron."
+  ansible.builtin.cron:
+    name: "web video archiver"
+    job: "/bin/bash {{ binfile_install_directory }}/archive-web-videos.sh"
+    user: "{{ remote_user }}"
+    minute: "0"
+    hour: "5"
+    weekday: "1"

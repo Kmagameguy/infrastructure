@@ -1,0 +1,9 @@
+---
+
+binfile_install_directory: /usr/local/bin
+
+ytdlp_binary: "yt-dlp"
+ytdlp_install_path: "{{ binfile_install_directory }}/{{ ytdlp_binary }}"
+ytdlp_download_directory: "/tmp/yt-dlp"
+ytdlp_repo_url: "https://github.com/yt-dlp/yt-dlp/releases/download"
+ytdlp_releases_api: "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest"
