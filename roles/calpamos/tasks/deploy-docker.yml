@@ -5,6 +5,9 @@
     path: "~/appdata/{{ item }}"
     state: directory
     recurse: true
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0755
   loop:
     - homeassistant
     - homer
@@ -17,9 +20,15 @@
   copy:
     src: "tools"
     dest: "/home/{{ remote_user }}/appdata/homer/"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0755
 
 - name: copy homer dashboard configuration
   become: true
   template:
     src: "config.yml"
     dest: "/home/{{ remote_user }}/appdata/homer/"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0755

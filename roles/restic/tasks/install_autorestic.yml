@@ -14,11 +14,14 @@
 
 - name: Get autorestic version.
   shell: |
+    set -o pipefail
     {{ is_installed.stat.path }} --version | \
     grep -oP 'autorestic\ version\ \K[0-9]*\.[0-9]*\.[0-9]*'
+  args:
+    executable: /bin/bash
   register: installed_version_register
   changed_when: false
-  when: autorestic_installed == True
+  when: autorestic_installed
 
 - name: Query GitHub API for autorestic release info.
   uri:
@@ -56,8 +59,11 @@
 
     - name: Unzip and update autorestic.
       shell: |
+        set -o pipefail
         cd {{ autorestic_download_directory }} &&
         bzip2 -d {{ file_name }} &&
         mv {{ file_name | regex_replace('.bz2') }} {{ autorestic_install_path }}
+      args:
+        executable: /bin/bash
 
-  when: autorestic_installed == False or ( autorestic_installed == True and installed_version_register.stdout != autorestic_ver)
+  when: not autorestic_installed or (autorestic_installed and installed_version_register.stdout != autorestic_ver)

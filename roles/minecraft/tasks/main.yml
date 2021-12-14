@@ -19,6 +19,9 @@
   template:
     src: "{{ item }}"
     dest: "~/{{ mc_dir }}/"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0755
   loop:
     - 'ops.json'
     - 'server'
@@ -29,6 +32,9 @@
   copy:
     src: "{{ item }}"
     dest: "~/{{ mc_dir }}/"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0755
   loop:
     - 'banned-ips.json'
     - 'banned-players.json'
@@ -38,6 +44,8 @@
   template:
     src: server
     dest: "~/{{ mc_dir }}/"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
     mode: a+x
 
 - name: copy systemd service config in place.
@@ -45,6 +53,9 @@
   template:
     src: minecraft.service
     dest: "/etc/systemd/system/"
+    owner: "root"
+    group: "root"
+    mode: 0644
 
 - name: start & enable the minecraft service.
   become: true
@@ -59,6 +70,8 @@
   template:
     src: "mc-healthcheck.sh"
     dest: "/usr/local/bin/"
+    owner: "root"
+    group: "root"
     mode: a+x
 
 - name: add server status monitor to crontab.

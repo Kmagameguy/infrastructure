@@ -20,4 +20,4 @@
 - name: reboot if required
   become: true
   reboot:
-  when: need_to_reboot.stat.exists == true
+  when: need_to_reboot.stat.exists
