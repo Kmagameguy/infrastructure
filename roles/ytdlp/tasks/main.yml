@@ -1,0 +1,13 @@
+---
+
+- name: "Install pre-requisites."
+  become: true
+  include: install-prereqs.yml
+
+- name: "Deploy yt-dlp."
+  become: true
+  include: install-yt-dlp.yml
+
+- name: "Configure yt-dlp."
+  become: true
+  include: configure-yt-dlp.yml

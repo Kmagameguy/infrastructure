@@ -1,0 +1,54 @@
+---
+
+- name: "Check if {{ ytdlp_install_path }} exists."
+  stat:
+    path: "{{ ytdlp_install_path }}"
+  register: is_installed
+
+- name: "Set yt-dlp installation status."
+  set_fact:
+    ytdlp_installed: "{{ is_installed.stat.exists }}"
+
+- name: "Get yt-dlp version."
+  shell: "{{ is_installed.stat.path }} --version"
+  register: installed_version_register
+  changed_when: false
+  when: ytdlp_installed == True
+
+- name: "Query GitHub API for yt-dlp release info."
+  uri:
+    url: "{{ ytdlp_releases_api }}"
+    return_content: true
+  register: release_version_register
+
+- name: "Identify latest version of yt-dlp."
+  set_fact:
+    ytdlp_ver: "{{ release_version_register.json.tag_name }}"
+
+- block:
+    - name: "Ensure {{ ytdlp_download_directory }} does not exist."
+      file:
+        path: "{{ ytdlp_download_directory }}"
+        state: absent
+
+    - name: "Create {{ ytdlp_download_directory }}."
+      file:
+        path: "{{ ytdlp_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: "Download yt-dlp."
+      get_url:
+        url: "{{ ytdlp_repo_url }}/{{ ytdlp_ver }}/{{ ytdlp_binary }}"
+        dest: "{{ ytdlp_download_directory }}"
+        force: true
+        owner: root
+        group: root
+        mode: +x
+
+    - name: "Install yt-dlp."
+      shell: |
+        cd {{ ytdlp_download_directory }} &&
+        mv {{ ytdlp_binary }} {{ ytdlp_install_path }}
+
+  when: ytdlp_installed == False or (ytdlp_installed == True and installed_version_register.stdout != ytdlp_ver)
