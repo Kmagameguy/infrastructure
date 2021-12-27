@@ -1,8 +1,9 @@
 ---
 
 - name: create docker configuration directories
+  become: true
   file:
-    path: "~/appdata/{{ item }}"
+    path: "/home/{{ remote_user }}/appdata/{{ item }}"
     state: directory
     recurse: true
     owner: "{{ remote_user }}"
