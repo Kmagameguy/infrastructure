@@ -144,8 +144,15 @@ update_server() {
   # PaperMC's API sucks now so we have to manually specify version & build IDs unless we convert this
   # To something that can more easily parse the REST data like python or node. SMH
   local PAPERMC_VERSION="1.17.1"
-  local PAPERMC_BUILD="404"
-  local PAPERMC_URL="https://papermc.io/api/v2/projects/paper/versions/${PAPERMC_VERSION}/builds/${PAPERMC_BUILD}/downloads/paper-${PAPERMC_VERSION}-${PAPERMC_BUILD}.jar"
+  local PAPERMC_BUILD_API="https://papermc.io/api/v2/projects/paper/versions/${PAPERMC_VERSION}"
+  
+  if [ ! command -v jq ]; then
+    printf "Error: jq is not installed. Cannot query for latest Paper build.\n"
+    exit 1
+  fi
+  
+  local PAPERMC_LATEST_BUILD="$(curl -L "${PAPERMC_BUILD_API}" | jq '.builds[-1]')"
+  local PAPERMC_URL="${PAPERMC_BUILD_API}/builds/${PAPERMC_LATEST_BUILD}/downloads/paper-${PAPERMC_VERSION}-${PAPERMC_LATEST_BUILD}.jar"
   local server_jar="$(ls | grep paper-*.jar)"
   local SERVER_BACKUP_FOLDER="./server_backups"
   local server_stats="$(server_status)"

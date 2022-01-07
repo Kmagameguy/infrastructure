@@ -13,6 +13,7 @@
       - software-properties-common
       - screen
       - openjdk-17-jdk-headless
+      - jq
     state: present
 
 - name: copy minecraft server config templates in place.
