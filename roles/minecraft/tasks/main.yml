@@ -58,6 +58,12 @@
     group: "root"
     mode: 0644
 
+- name: stop minecraft server if it is running
+  become: true
+  service:
+    name: minecraft
+    state: stopped
+
 - name: start & enable the minecraft service.
   become: true
   ansible.builtin.systemd:
