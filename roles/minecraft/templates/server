@@ -156,27 +156,32 @@ update_server() {
   local server_jar="$(ls | grep paper-*.jar)"
   local SERVER_BACKUP_FOLDER="./server_backups"
   local server_stats="$(server_status)"
+  local latest_server_jar="paper-${PAPERMC_VERSION}-${PAPERMC_LATEST_BUILD}.jar"
 
-  if [ "${server_stats}" = "Server is down." ]; then
-
-    if [ ! -d "${SERVER_BACKUP_FOLDER}" ]; then
-      printf "Creating backup folder...\n"
-      mkdir -p "${SERVER_BACKUP_FOLDER}"
-    fi
-
-    if [ ! -z "${server_jar}" ]; then
-      printf "Backing up current server file...\n"
-      mv "${server_jar}" "${SERVER_BACKUP_FOLDER}/"
-    fi
-
-    printf "Downloading latest version of papermc..."
-    if wget --trust-server-names --content-disposition "${PAPERMC_URL}"; then
-      printf "done\n"
-    else
-      printf "Error retrieving server file. Try again.\n"
-    fi
+  if [ "${server_jar}" == "${latest_server_jar}" ]; then
+    printf "Latest build already installed. Skipping updates.\n"
   else
-    printf "Error: Server is running. No action taken.\n"
+    if [ "${server_stats}" = "Server is down." ]; then
+
+      if [ ! -d "${SERVER_BACKUP_FOLDER}" ]; then
+        printf "Creating backup folder...\n"
+        mkdir -p "${SERVER_BACKUP_FOLDER}"
+      fi
+
+      if [ ! -z "${server_jar}" ]; then
+        printf "Backing up current server file...\n"
+        mv "${server_jar}" "${SERVER_BACKUP_FOLDER}/"
+      fi
+
+      printf "Downloading latest version of papermc..."
+      if wget --trust-server-names --content-disposition "${PAPERMC_URL}"; then
+        printf "done\n"
+      else
+        printf "Error retrieving server file. Try again.\n"
+      fi
+    else
+      printf "Error: Server is running. No action taken.\n"
+    fi
   fi
 }
 

@@ -17,6 +17,7 @@ SuccessExitStatus=0 1
 
 Restart=always
 
+ExecStartPre=/home/{{ remote_user }}/{{ mc_dir }}/server update
 ExecStart=/home/{{ remote_user }}/{{ mc_dir }}/server start
 ExecStop=/home/{{ remote_user }}/{{ mc_dir }}/server stop
 
