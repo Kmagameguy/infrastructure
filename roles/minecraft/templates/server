@@ -143,7 +143,7 @@ backup_server() {
 update_server() {
   # PaperMC's API sucks now so we have to manually specify version & build IDs unless we convert this
   # To something that can more easily parse the REST data like python or node. SMH
-  local PAPERMC_VERSION="1.17.1"
+  local PAPERMC_VERSION="1.18.1"
   local PAPERMC_BUILD_API="https://papermc.io/api/v2/projects/paper/versions/${PAPERMC_VERSION}"
   
   if [ ! command -v jq ]; then
