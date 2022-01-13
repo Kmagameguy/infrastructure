@@ -17,3 +17,6 @@ update-all:
 
 update-docker-images:
 	ansible-playbook run.yml --tags docker
+
+update-minecraft:
+	ansible-playbook run.yml --tags minecraft
