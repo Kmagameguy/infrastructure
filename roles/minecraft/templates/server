@@ -53,7 +53,6 @@ server_status() {
 
 start_server() {
   cd "$( dirname "$0" )"
-  local server_path="~/{{ mc_dir }}"
   local server_jar="$(ls | grep paper-*.jar)"
 
   if [ -z "${server_jar}" ]; then
@@ -105,7 +104,7 @@ restart_server() {
 }
 
 backup_server() {
-  local minecraft_dir="~/{{ mc_dir }}"
+  local minecraft_dir="/home/{{ remote_user }}/{{ mc_dir }}"
   local backup_dir="{{ data_root_dir }}/minecraft_server_backup"
   local temp_file="${backup_dir}/mcbackup.tar"
   local md5_sum_file="${backup_dir}/backup.md5"
@@ -117,8 +116,8 @@ backup_server() {
     fi
 
     printf 'Beginning backup...\n'
-    if ! $(tar --mode="a+rw" -cf $temp_file -C $minecraft_dir . >&1 | logmsg; test ${PIPESTATUS[0]} -eq 0); then
-      rm $temp_file 2>/dev/null
+    if ! $(tar --mode="a+rw" -cf "${temp_file}" -C "${minecraft_dir}" . >&1 | logmsg; test ${PIPESTATUS[0]} -eq 0); then
+      rm "${temp_file}" 2>/dev/null
       printf "Unable to generate tar file. Aborting."
       exit 1
     fi
