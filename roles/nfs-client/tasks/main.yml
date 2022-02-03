@@ -1,0 +1,7 @@
+---
+
+- name: install nfs dependencies
+  include: install_dependencies.yml
+
+- name: configure nfs
+  include: configure_nfs_client.yml

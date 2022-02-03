@@ -1,0 +1,28 @@
+---
+
+- block:
+  - name: Check if mount directory exists
+    become: true
+    stat:
+      path: "{{ item.value.mount_path }}"
+    register: mount_dir_stats
+    loop: "{{ query('dict', fileshare_mounts) }}"
+
+  - name: Create any missing mount paths
+    become: true
+    file:
+      path: "{{ item.item.value.mount_path }}"
+      state: directory
+      mode: 0755
+    when: item.stat.exists == false
+    loop: "{{ mount_dir_stats.results }}"
+
+- name: Mount nfs shares
+  become: true
+  ansible.posix.mount:
+    path: "{{ item.value.mount_path }}"
+    src: "{{ item.value.source }}"
+    state: mounted
+    opts: x-systemd.automount,timeo=900,retrans=5,_netdev
+    fstype: nfs
+  loop: "{{ query('dict', fileshare_mounts) }}"
