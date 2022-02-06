@@ -9,6 +9,7 @@
     group: "{{ remote_user }}"
     mode: 0755
   loop:
+    - paperless-ng
     - jellyfin
     - mariadb
     - podgrab

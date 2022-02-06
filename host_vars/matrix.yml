@@ -8,6 +8,18 @@ docker_users:
 
 appdata_path: "/home/{{ matrix_user }}/appdata"
 containers:
+  - service_name: paperless-ng
+    container_name: paperless-ng
+    image: lscr.io/linuxserver/paperless-ng
+    active: true
+    ports:
+      - "{{ secret_paperless_port }}:{{ secret_paperless_port }}"
+    include_global_env_vars: true
+    volumes:
+      - "{{ appdata_path }}/paperless-ng/config:/config"
+      - "{{ appdata_path }}/paperless-ng/data:/data"
+    restart: unless-stopped
+  ###
   - service_name: jellyfin
     container_name: jellyfin
     image: ghcr.io/linuxserver/jellyfin
