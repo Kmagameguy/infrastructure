@@ -5,3 +5,6 @@
 
 - name: install autorestic
   include: install_autorestic.yml
+
+- name: copy backup config
+  include: copy_backup_config.yml

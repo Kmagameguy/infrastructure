@@ -1,6 +1,7 @@
 ---
 
 - name: create docker configuration directories
+  become: true
   file:
     path: "~/appdata/{{ item }}"
     state: directory
@@ -9,11 +10,33 @@
     group: "{{ remote_user }}"
     mode: 0755
   loop:
-    - paperless-ng
+    - diun
+    - freshrss
+    - gitea
+    - homeassistant
+    - homer
     - jellyfin
     - mariadb
+    - paperless-ng
     - podgrab
-    - diun
+    - postgresql
     - scrutiny
-    - freshrss
     - uptime-kuma
+
+- name: deploy homer assets
+  become: true
+  copy:
+    src: "tools"
+    dest: "/home/{{ remote_user }}/appdata/homer/"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0755
+
+- name: copy homer dashboard configuration
+  become: true
+  template:
+    src: "config.yml"
+    dest: "/home/{{ remote_user }}/appdata/homer/"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0755

@@ -1,0 +1,45 @@
+---
+version: 2
+
+extras:
+  options: &opts
+    options:
+      backup:
+        exclude-file: .autorestic.exclude
+      forget:
+        keep-daily: 4
+        keep-last: 5
+        keep-monthly: 12
+        keep-weekly: 1
+        keep-yearly: 7
+
+backends:
+  nfs:
+    type: local
+    path: /mnt/restic_backup
+    key: "{{ carthonasi_restic_key }}"
+
+locations:
+  ncdata:
+    from:
+      - "{{ carthonasi_ncdata_location }}"
+    to:
+      - nfs
+    <<: *opts
+  ncloud:
+    from:
+      - "{{ carthonasi_ncloud_location }}"
+    to:
+      - nfs
+    <<: *opts
+  php:
+    from:
+      - "{{ carthonasi_php_location }}"
+    to:
+      - nfs
+    <<: *opts
+  webserver:
+    from: "{{ carthonasi_webserver_locations }}"
+    to:
+      - nfs
+    <<: *opts

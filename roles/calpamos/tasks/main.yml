@@ -1,5 +1,0 @@
----
-
-- name: deploy docker services
-  include: deploy-docker.yml
-  tags: compose

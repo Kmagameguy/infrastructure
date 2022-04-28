@@ -140,3 +140,70 @@ containers:
     ports:
       - "{{ secret_uptime_kuma_host_port }}:{{ secret_uptime_kuma_client_port }}"
     restart: unless-stopped
+  ###
+  - service_name: homeassistant
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    active: true
+    include_global_env_vars: true
+    network_mode: host
+    privileged: true
+    volumes:
+      - "{{ appdata_path }}/homeassistant:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+    restart: unless-stopped
+  ###
+  - service_name: homer
+    container_name: homer
+    image: b4bz/homer
+    active: true
+    include_global_env_vars: true
+    volumes:
+      - "{{ appdata_path }}/homer:/www/assets"
+    ports:
+      - "{{ secret_homer_port }}:{{ secret_homer_port }}"
+    restart: unless-stopped
+  ###
+  - service_name: gitea
+    container_name: gitea
+    image: gitea/gitea:latest
+    active: true
+    include_global_env_vars: true
+    environment: "{{ secret_gitea_db_config }}"
+    networks:
+      - gitea
+    volumes:
+      - "{{ appdata_path }}/gitea:/data"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports: "{{ secret_gitea_ports }}"
+    depends_on:
+      - db
+    restart: unless-stopped
+  ###
+  - service_name: db
+    container_name: db
+    image: postgres:latest
+    active: true
+    include_global_env_vars: true
+    environment: "{{ secret_matrix_db_config }}"
+    volumes:
+      - "{{ appdata_path }}/postgresql/initdb.d:/docker-entrypoint-initdb.d"
+      - "{{ appdata_path }}/postgresql/data:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/postgresql/postgres.conf:/etc/postgresql/postgresql.conf"
+    networks:
+      - gitea
+    restart: always
+  ###
+  - service_name: adminer
+    container_name: adminer
+    image: adminer
+    active: true
+    networks:
+      - gitea
+    ports:
+      - "{{ secret_adminer_ports }}"
+    restart: always
+networks:
+  gitea:
+    external: false

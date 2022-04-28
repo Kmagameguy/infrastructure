@@ -6,40 +6,36 @@
     - 'vars/vault.yml'
   roles:
     - role: base
-    - role: restic
   tags: update
 
-# Update Docker services
-- hosts: docker
+- hosts: carthonasi
   vars_files:
     - 'vars/vault.yml'
   roles:
+    - role: nfs-client
+    #  - role: restic
+
+- hosts: gatekeeper
+  vars_files:
+    - 'vars/vault.yml'
+  roles:
+    - role: nfs-client
+    #  - role: restic
+
+- hosts: matrix
+  vars_files:
+    - 'vars/vault.yml'
+  roles:
+    #  - role: restic
     - role: docker
-  tags: docker
+    - role: ytdlp
+    #  - role: minecraft
 
-# Deploy Docker services on Calpamos
-- hosts: calpamos
-  vars_files:
-    - 'vars/vault.yml'
-  roles:
-    - role: calpamos
-    - role: ironicbadger.ansible_role_docker_compose_generator
-  tags: compose
-
-# Deploy Docker services on Matrix
+# Deploy docker services on Matrix
 - hosts: matrix
   vars_files:
     - 'vars/vault.yml'
   roles:
     - role: matrix
-    - role: ytdlp
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: ironicbadger.docker_compose_generator
   tags: compose
-
-# Deploy Minecraft Server
-- hosts: matrix
-  vars_files:
-    - 'vars/vault.yml'
-  roles:
-    - role: minecraft
-  tags: minecraft

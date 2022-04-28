@@ -13,3 +13,5 @@ autorestic_install_path: "{{ binfile_install_directory }}/{{ autorestic_binary }
 autorestic_download_directory: "/tmp/autorestic"
 autorestic_repo_url: "https://github.com/cupcakearmy/autorestic/releases/download"
 autorestic_releases_api: "https://api.github.com/repos/cupcakearmy/autorestic/releases/latest"
+
+backup_command: "autorestic backup -a"
