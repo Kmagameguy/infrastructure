@@ -1,0 +1,7 @@
+---
+- name: install NFS tools
+  become: true
+  ansible.builtin.package:
+    name:
+      - nfs-common
+    state: present

@@ -1,0 +1,33 @@
+---
+version: 2
+
+extras:
+  options: &opts
+    cron: 33 3 * * *
+    options:
+      backup:
+        exclude-file: .autorestic.exclude
+      forget:
+        keep-last: 5
+        keep-daily: 4
+        keep-weekly: 1
+        keep-monthly: 12
+        keep-yearly: 7
+
+backends:
+  hdd:
+    type: local
+    path: "{{ matrix_restic_backup_path }}"
+    key: "{{ matrix_restic_key }}"
+
+locations:
+  docker_data:
+    from: "{{ matrix_docker_location }}"
+    to:
+      - hdd
+    <<: *opts
+  minecraft_data:
+    from: "{{ matrix_minecraft_location }}"
+    to:
+      - hdd
+    <<: *opts

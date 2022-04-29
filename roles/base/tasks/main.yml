@@ -1,3 +1,6 @@
 ---
+- name: base packages
+  include: base_packages.yml
+
 - name: system updates
   include: system_updates.yml

@@ -1,0 +1,30 @@
+---
+# - name: copy "{{ ansible_host }}"'s backup config
+#   template:
+#     src: "{{ ansible_host }}/{{ item }}"
+#     dest: "/home/{{ remote_user }}/"
+#     owner: "{{ remote_user }}"
+#     group: "{{ remote_user }}"
+#     mode: 0755
+#   loop:
+#     - '.autorestic.yml'
+#     - '.autorestic.exclude'
+
+- name: Copy backup-runner script
+  become: true
+  template:
+    src: "backup-runner.j2"
+    dest: "/usr/local/bin/backup-runner"
+    owner: "root"
+    group: "root"
+    mode: "a+x"
+
+# - name: configure backup cronjob
+#   become: true
+#   ansible.builtin.cron:
+#     name: system backup
+#     job: "/bin/bash /usr/local/bin/autorestic-runner"
+#     user: "root"
+#     minute: "5"
+#     hour: "3"
+#     state: present

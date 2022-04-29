@@ -1,2 +1,2 @@
 ---
-- src: ironicbadger.ansible_role_docker_compose_generator
+- src: ironicbadger.docker_compose_generator

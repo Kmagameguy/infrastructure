@@ -1,11 +1,9 @@
 [servers]
 atlanticus
-calpamos
 carthonasi
 gatekeeper
 heimdallr
 matrix
 
 [docker]
-calpamos
 matrix

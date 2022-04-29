@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+FILESHARE_LOCATION="{{ restic_backup_dir }}"
+
+print_message() {
+  local message="${1:-""}"
+  printf "%s\n" "${message}"
+}
+
+mount_fileshare() {
+  print_message "Mounting fileshare..."
+  sudo mount "${FILESHARE_LOCATION}"
+}
+
+main() {
+  cd "/home/{{ remote_user }}" || exit
+
+  print_message "Starting backup..."
+  print_message "Checking for required mounts..."
+
+  if ! mount | grep -q "${FILESHARE_LOCATION}"; then
+    mount_fileshare
+  fi
+
+  print_message "...Fileshare mount OK"
+
+  print_message "Running backup..."
+  {{ backup_command | indent( width=2, first=False) }}
+}
+
+main "${@}"
