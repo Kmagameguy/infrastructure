@@ -38,4 +38,4 @@
   roles:
     - role: matrix
     - role: ironicbadger.docker_compose_generator
-  tags: compose
+  tags: docker
