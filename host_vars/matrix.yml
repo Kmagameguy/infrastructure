@@ -63,6 +63,8 @@ containers:
     command:
       - serve
     include_global_env_vars: true
+    volumes:
+      - "{{ diun_sock }}:{{ diun_sock }}"
     environment:
       - "LOG_LEVEL=info"
       - "LOG_JSON=false"
