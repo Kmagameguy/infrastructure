@@ -78,7 +78,7 @@ containers:
   ###
   - service_name: scrutiny
     container_name: scrutiny
-    image: ghcr.io/linuxserver/scrutiny:8e34ef8d-ls34
+    image: ghcr.io/linuxserver/scrutiny:8e34ef8d-ls35
     active: true
     privileged: true
     cap_add:
