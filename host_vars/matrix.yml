@@ -40,7 +40,7 @@ containers:
       - "{{ data_root_dir }}/Videos/TV:/data/tvshows"
       - "{{ data_root_dir }}/Videos/YouTube:/data/youtube"
       - "{{ data_root_dir }}/Music/Library:/data/music"
-      - "{{ data_root_dir}}/InternetRadio:/data/internetradio"
+      - "{{ data_root_dir }}/InternetRadio:/data/internetradio"
     restart: unless-stopped
   ###
   - service_name: podgrab
@@ -54,7 +54,7 @@ containers:
       - CHECK_FREQUENCY=240
     volumes:
       - "{{ appdata_path }}/podgrab:/config"
-      - "{{ data_root_dir}}/InternetRadio:/assets"
+      - "{{ data_root_dir }}/InternetRadio:/assets"
   ###
   - service_name: diun
     container_name: diun
@@ -118,7 +118,7 @@ containers:
     volumes:
       - "{{ appdata_path }}/mariadb:/config"
     ports:
-      - "{{ secret_mysql_host_port }}:{{ secret_mysql_client_port}}"
+      - "{{ secret_mysql_host_port }}:{{ secret_mysql_client_port }}"
     restart: unless-stopped
   ###
   - service_name: kiwix
@@ -130,7 +130,7 @@ containers:
     volumes:
       - "{{ data_root_dir }}/Wikipedia:/data"
     ports:
-      - "{{ secret_kiwix_host_port }}:{{ secret_kiwix_client_port}}"
+      - "{{ secret_kiwix_host_port }}:{{ secret_kiwix_client_port }}"
     restart: unless-stopped
   ###
   - service_name: uptime-kuma
