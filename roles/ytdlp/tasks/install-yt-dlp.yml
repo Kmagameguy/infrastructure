@@ -25,7 +25,8 @@
   ansible.builtin.set_fact:
     ytdlp_ver: "{{ release_version_register.json.tag_name }}"
 
-- block:
+- name: Download & install yt-dlp from source
+  block:
     - name: "Ensure {{ ytdlp_download_directory }} does not exist."
       ansible.builtin.file:
         path: "{{ ytdlp_download_directory }}"

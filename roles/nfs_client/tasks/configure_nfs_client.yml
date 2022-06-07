@@ -1,6 +1,7 @@
 ---
 
-- block:
+- name: Ensure NFS paths exist and are mounted
+  block:
   - name: Check if mount directory exists
     become: true
     ansible.builtin.stat:

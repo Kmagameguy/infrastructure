@@ -33,7 +33,8 @@
   ansible.builtin.set_fact:
     autorestic_ver: "{{ release_version_register.json.tag_name|regex_replace('v') }}"
 
-- block:
+- name: Perform autorestic installation via github source
+  block:
     - name: "Ensure {{ autorestic_download_directory }} does not exist."
       ansible.builtin.file:
         path: "{{ autorestic_download_directory }}"
