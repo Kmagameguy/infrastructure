@@ -10,7 +10,7 @@ ansiblelint:
 	ansible-lint
 
 yamllint:
-	yamllint .
+	yamllint -c .config/yamllint.yml .
 
 update-all:
 	ansible-playbook run.yml --tags update
