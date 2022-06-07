@@ -14,7 +14,7 @@
       path: "{{ item.item.value.mount_path }}"
       state: directory
       mode: 0755
-    when: item.stat.exists == false
+    when: item.stat.exists
     loop: "{{ mount_dir_stats.results }}"
 
 - name: Mount nfs shares
