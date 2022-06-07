@@ -7,7 +7,7 @@ encrypt:
 lint-all: ansiblelint yamllint
 
 ansiblelint:
-	ansible-lint .
+	ansible-lint
 
 yamllint:
 	yamllint .
