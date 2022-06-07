@@ -14,7 +14,7 @@ jobs:
         uses: ansible/ansible-lint-action@main
         with:
           targets: "./run.yml"
-          args: "-q -x 305,301"
+          path: "./.ansible-lint"
           override-deps: |
             rich>=9.5.1,<11.0.0
 

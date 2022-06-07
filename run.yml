@@ -12,14 +12,14 @@
   vars_files:
     - 'vars/vault.yml'
   roles:
-    - role: nfs-client
+    - role: nfs_client
     #  - role: restic
 
 - hosts: gatekeeper
   vars_files:
     - 'vars/vault.yml'
   roles:
-    - role: nfs-client
+    - role: nfs_client
     #  - role: restic
 
 - hosts: matrix

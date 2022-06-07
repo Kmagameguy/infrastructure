@@ -104,7 +104,7 @@ restart_server() {
 }
 
 backup_server() {
-  local minecraft_dir="/home/{{ remote_user }}/{{ mc_dir }}"
+  local minecraft_dir="/home/{{ ansible_user }}/{{ mc_dir }}"
   local backup_dir="{{ data_root_dir }}/minecraft_server_backup"
   local temp_file="${backup_dir}/mcbackup.tar"
   local md5_sum_file="${backup_dir}/backup.md5"

@@ -1,12 +1,12 @@
 ---
 
 - name: Update apt cache
-  package:
+  ansible.builtin.package:
     update_cache: true
     cache_valid_time: 3600
 
 - name: Ensure dependencies are installed
-  package:
+  ansible.builtin.package:
     name:
       - python3
       - ffmpeg

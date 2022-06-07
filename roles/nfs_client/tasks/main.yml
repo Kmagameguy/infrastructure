@@ -1,0 +1,7 @@
+---
+
+- name: install nfs dependencies
+  include_tasks: install_dependencies.yml
+
+- name: configure nfs
+  include_tasks: configure_nfs_client.yml

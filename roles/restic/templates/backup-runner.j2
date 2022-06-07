@@ -15,7 +15,7 @@ mount_fileshare() {
 }
 
 main() {
-  cd "/home/{{ remote_user }}" || exit
+  cd "/home/{{ ansible_user }}" || exit
 
   print_message "Starting backup..."
   print_message "Checking for required mounts..."

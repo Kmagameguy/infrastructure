@@ -2,13 +2,13 @@
 
 - name: update apt cache
   become: true
-  package:
+  ansible.builtin.package:
     update_cache: true
     cache_valid_time: 3600
 
 - name: ensure dependencies are installed
   become: true
-  package:
+  ansible.builtin.package:
     name:
       - software-properties-common
       - screen
@@ -17,11 +17,11 @@
     state: present
 
 - name: copy minecraft server config templates in place.
-  template:
+  ansible.builtin.template:
     src: "{{ item }}"
     dest: "~/{{ mc_dir }}/"
-    owner: "{{ remote_user }}"
-    group: "{{ remote_user }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0755
   loop:
     - 'ops.json'
@@ -30,11 +30,11 @@
     - 'whitelist.json'
 
 - name: copy minecraft static files in place.
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: "~/{{ mc_dir }}/"
-    owner: "{{ remote_user }}"
-    group: "{{ remote_user }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0755
   loop:
     - 'banned-ips.json'
@@ -42,16 +42,16 @@
     - 'eula.txt'
 
 - name: copy minecraft server administration script in place.
-  template:
+  ansible.builtin.template:
     src: server
     dest: "~/{{ mc_dir }}/"
-    owner: "{{ remote_user }}"
-    group: "{{ remote_user }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: a+x
 
 - name: copy systemd service config in place.
   become: true
-  template:
+  ansible.builtin.template:
     src: minecraft.service
     dest: "/etc/systemd/system/"
     owner: "root"
@@ -60,7 +60,7 @@
 
 - name: stop minecraft server if it is running
   become: true
-  service:
+  ansible.builtin.service:
     name: minecraft
     state: stopped
 
@@ -74,7 +74,7 @@
 
 - name: copy server status monitoring cron script in place.
   become: true
-  template:
+  ansible.builtin.template:
     src: "mc-healthcheck.sh"
     dest: "/usr/local/bin/"
     owner: "root"
@@ -85,6 +85,6 @@
   ansible.builtin.cron:
     name: minecraft server healthcheck
     job: "/bin/bash /usr/local/bin/mc-healthcheck.sh"
-    user: "{{ remote_user }}"
+    user: "{{ ansible_user }}"
     minute: "0"
     state: present
