@@ -1,6 +1,6 @@
 ---
 - name: base packages
-  include: base_packages.yml
+  include_tasks: base_packages.yml
 
 - name: system updates
-  include: system_updates.yml
+  include_tasks: system_updates.yml

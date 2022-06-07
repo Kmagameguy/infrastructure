@@ -1,7 +1,7 @@
 ---
 
 - name: deploy docker services
-  include: deploy-docker.yml
+  include_tasks: deploy-docker.yml
 
 - name: configure autorestic
-  include: configure-autorestic.yml
+  include_tasks: configure-autorestic.yml
