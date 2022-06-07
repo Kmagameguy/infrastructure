@@ -1,7 +1,7 @@
 ---
 
 - name: "Copy yt-dlp config in place."
-  template:
+  ansible.builtin.template:
     src: "archive-web-videos.sh"
     dest: "{{ binfile_install_directory }}"
     owner: root

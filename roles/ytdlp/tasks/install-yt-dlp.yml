@@ -1,44 +1,44 @@
 ---
 
 - name: "Check if {{ ytdlp_install_path }} exists."
-  stat:
+  ansible.builtin.stat:
     path: "{{ ytdlp_install_path }}"
   register: is_installed
 
 - name: "Set yt-dlp installation status."
-  set_fact:
+  ansible.builtin.set_fact:
     ytdlp_installed: "{{ is_installed.stat.exists }}"
 
 - name: "Get yt-dlp version."
-  shell: "{{ is_installed.stat.path }} --version"
+  ansible.builtin.shell: "{{ is_installed.stat.path }} --version"
   register: installed_version_register
   changed_when: false
   when: ytdlp_installed
 
 - name: "Query GitHub API for yt-dlp release info."
-  uri:
+  ansible.builtin.uri:
     url: "{{ ytdlp_releases_api }}"
     return_content: true
   register: release_version_register
 
 - name: "Identify latest version of yt-dlp."
-  set_fact:
+  ansible.builtin.set_fact:
     ytdlp_ver: "{{ release_version_register.json.tag_name }}"
 
 - block:
     - name: "Ensure {{ ytdlp_download_directory }} does not exist."
-      file:
+      ansible.builtin.file:
         path: "{{ ytdlp_download_directory }}"
         state: absent
 
     - name: "Create {{ ytdlp_download_directory }}."
-      file:
+      ansible.builtin.file:
         path: "{{ ytdlp_download_directory }}"
         state: directory
         mode: 0755
 
     - name: "Download yt-dlp."
-      get_url:
+      ansible.builtin.get_url:
         url: "{{ ytdlp_repo_url }}/{{ ytdlp_ver }}/{{ ytdlp_binary }}"
         dest: "{{ ytdlp_download_directory }}"
         force: true
@@ -47,7 +47,7 @@
         mode: +x
 
     - name: "Install yt-dlp."
-      shell: |
+      ansible.builtin.shell: |
         cd {{ ytdlp_download_directory }} &&
         mv {{ ytdlp_binary }} {{ ytdlp_install_path }}
 

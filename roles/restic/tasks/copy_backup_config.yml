@@ -12,7 +12,7 @@
 
 - name: Copy backup-runner script
   become: true
-  template:
+  ansible.builtin.template:
     src: "backup-runner.j2"
     dest: "/usr/local/bin/backup-runner"
     owner: "root"

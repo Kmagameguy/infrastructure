@@ -2,13 +2,13 @@
 
 - name: update apt cache
   become: true
-  package:
+  ansible.builtin.package:
     update_cache: true
     cache_valid_time: 3600
 
 - name: ensure dependencies are installed
   become: true
-  package:
+  ansible.builtin.package:
     name:
       - software-properties-common
       - screen
@@ -17,7 +17,7 @@
     state: present
 
 - name: copy minecraft server config templates in place.
-  template:
+  ansible.builtin.template:
     src: "{{ item }}"
     dest: "~/{{ mc_dir }}/"
     owner: "{{ remote_user }}"
@@ -30,7 +30,7 @@
     - 'whitelist.json'
 
 - name: copy minecraft static files in place.
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: "~/{{ mc_dir }}/"
     owner: "{{ remote_user }}"
@@ -42,7 +42,7 @@
     - 'eula.txt'
 
 - name: copy minecraft server administration script in place.
-  template:
+  ansible.builtin.template:
     src: server
     dest: "~/{{ mc_dir }}/"
     owner: "{{ remote_user }}"
@@ -51,7 +51,7 @@
 
 - name: copy systemd service config in place.
   become: true
-  template:
+  ansible.builtin.template:
     src: minecraft.service
     dest: "/etc/systemd/system/"
     owner: "root"
@@ -60,7 +60,7 @@
 
 - name: stop minecraft server if it is running
   become: true
-  service:
+  ansible.builtin.service:
     name: minecraft
     state: stopped
 
@@ -74,7 +74,7 @@
 
 - name: copy server status monitoring cron script in place.
   become: true
-  template:
+  ansible.builtin.template:
     src: "mc-healthcheck.sh"
     dest: "/usr/local/bin/"
     owner: "root"

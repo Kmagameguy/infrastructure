@@ -3,14 +3,14 @@
 - block:
   - name: Check if mount directory exists
     become: true
-    stat:
+    ansible.builtin.stat:
       path: "{{ item.value.mount_path }}"
     register: mount_dir_stats
     loop: "{{ query('dict', fileshare_mounts) }}"
 
   - name: Create any missing mount paths
     become: true
-    file:
+    ansible.builtin.file:
       path: "{{ item.item.value.mount_path }}"
       state: directory
       mode: 0755

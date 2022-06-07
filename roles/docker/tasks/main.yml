@@ -2,6 +2,6 @@
 
 - name: update docker services
   become: true
-  shell:
+  ansible.builtin.shell:
     chdir: "/home/{{ remote_user }}/"
     cmd: "{{ docker_update_command }}"

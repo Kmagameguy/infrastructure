@@ -1,7 +1,7 @@
 ---
 
 - name: copy autorestic config in place.
-  template:
+  ansible.builtin.template:
     src: ".autorestic.yml"
     dest: "/home/{{ remote_user }}"
     owner: "{{ remote_user }}"

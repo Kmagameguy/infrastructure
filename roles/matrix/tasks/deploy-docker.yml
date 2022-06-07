@@ -2,7 +2,7 @@
 
 - name: create docker configuration directories
   become: true
-  file:
+  ansible.builtin.file:
     path: "~/appdata/{{ item }}"
     state: directory
     recurse: true
@@ -25,7 +25,7 @@
 
 - name: deploy homer assets
   become: true
-  copy:
+  ansible.builtin.copy:
     src: "tools"
     dest: "/home/{{ remote_user }}/appdata/homer/"
     owner: "{{ remote_user }}"
@@ -34,7 +34,7 @@
 
 - name: copy homer dashboard configuration
   become: true
-  template:
+  ansible.builtin.template:
     src: "config.yml"
     dest: "/home/{{ remote_user }}/appdata/homer/"
     owner: "{{ remote_user }}"
