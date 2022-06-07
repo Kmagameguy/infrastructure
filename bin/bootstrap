@@ -4,9 +4,25 @@
 
 set -e
 
-cd "$(dirname "$0")/.."
+BIN_DIR=/usr/local/bin
 
-sudo echo ""
+install_python_pip_ansible_and_linters() {
+  sudo apt install python3 python3-pip ansible -y
+  pip install yamllint ansible-lint
+}
 
-sudo apt install python3 python3-pip ansible -y
-sudo pip install yamllint ansible-lint
+install_bwcli() {
+  curl -L "https://vault.bitwarden.com/download/?app=cli&platform=linux" --output "/tmp/bw.zip"
+  cd /tmp/ || exit
+  unzip -o bw.zip
+  sudo mv bw "${BIN_DIR}/"
+  sudo chmod a+x "${BIN_DIR}/bw"
+}
+
+main() {
+  sudo echo ""
+  install_python_pip_ansible_and_linters
+  install_bwcli
+}
+
+main "${@}"
