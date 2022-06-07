@@ -6,20 +6,20 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-WorkingDirectory=/home/{{ remote_user }}/{{ mc_dir }}
+WorkingDirectory=/home/{{ ansible_user }}/{{ mc_dir }}
 Type=forking
 
-User={{ remote_user }}
-Group={{ remote_user }}
+User={{ ansible_user }}
+Group={{ ansible_user }}
 Nice=5
 KillMode=none
 SuccessExitStatus=0 1
 
 Restart=on-failure
 
-ExecStartPre=/home/{{ remote_user }}/{{ mc_dir }}/server update
-ExecStart=/home/{{ remote_user }}/{{ mc_dir }}/server start
-ExecStop=/home/{{ remote_user }}/{{ mc_dir }}/server stop
+ExecStartPre=/home/{{ ansible_user }}/{{ mc_dir }}/server update
+ExecStart=/home/{{ ansible_user }}/{{ mc_dir }}/server start
+ExecStop=/home/{{ ansible_user }}/{{ mc_dir }}/server stop
 
 [Install]
 WantedBy=multi-user.target

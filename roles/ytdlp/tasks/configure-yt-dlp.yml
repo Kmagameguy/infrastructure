@@ -12,7 +12,7 @@
   ansible.builtin.cron:
     name: "web video archiver"
     job: "/bin/bash {{ binfile_install_directory }}/archive-web-videos.sh"
-    user: "{{ remote_user }}"
+    user: "{{ ansible_user }}"
     minute: "0"
     hour: "5"
     weekday: "1"

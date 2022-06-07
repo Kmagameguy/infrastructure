@@ -2,9 +2,9 @@
 # - name: copy "{{ ansible_host }}"'s backup config
 #   template:
 #     src: "{{ ansible_host }}/{{ item }}"
-#     dest: "/home/{{ remote_user }}/"
-#     owner: "{{ remote_user }}"
-#     group: "{{ remote_user }}"
+#     dest: "/home/{{ ansible_user }}/"
+#     owner: "{{ ansible_user }}"
+#     group: "{{ ansible_user }}"
 #     mode: 0755
 #   loop:
 #     - '.autorestic.yml'

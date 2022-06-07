@@ -18,7 +18,7 @@ locations:
         keep-last:
           - "5"
   minecraft_data:
-    from: "/home/{{ remote_user }}/{{ mc_dir }}"
+    from: "/home/{{ ansible_user }}/{{ mc_dir }}"
     to:
       - hdd
     cron: 33 3 * * *

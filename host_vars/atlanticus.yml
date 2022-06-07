@@ -1,4 +1,4 @@
 ---
 
-remote_user: "{{ atlanticus_user }}"
+ansible_user: "{{ atlanticus_user }}"
 ansible_become_pass: "{{ atlanticus_become_password }}"

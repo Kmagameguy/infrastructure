@@ -20,8 +20,8 @@
   ansible.builtin.template:
     src: "{{ item }}"
     dest: "~/{{ mc_dir }}/"
-    owner: "{{ remote_user }}"
-    group: "{{ remote_user }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0755
   loop:
     - 'ops.json'
@@ -33,8 +33,8 @@
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "~/{{ mc_dir }}/"
-    owner: "{{ remote_user }}"
-    group: "{{ remote_user }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0755
   loop:
     - 'banned-ips.json'
@@ -45,8 +45,8 @@
   ansible.builtin.template:
     src: server
     dest: "~/{{ mc_dir }}/"
-    owner: "{{ remote_user }}"
-    group: "{{ remote_user }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: a+x
 
 - name: copy systemd service config in place.
@@ -85,6 +85,6 @@
   ansible.builtin.cron:
     name: minecraft server healthcheck
     job: "/bin/bash /usr/local/bin/mc-healthcheck.sh"
-    user: "{{ remote_user }}"
+    user: "{{ ansible_user }}"
     minute: "0"
     state: present

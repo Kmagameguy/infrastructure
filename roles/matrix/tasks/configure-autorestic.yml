@@ -3,15 +3,15 @@
 - name: copy autorestic config in place.
   ansible.builtin.template:
     src: ".autorestic.yml"
-    dest: "/home/{{ remote_user }}"
-    owner: "{{ remote_user }}"
-    group: "{{ remote_user }}"
+    dest: "/home/{{ ansible_user }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0600
 
 - name: schedule autorestic with cron
   ansible.builtin.cron:
     name: autorestic backup
     job: "/usr/local/bin/autorestic --ci cron"
-    user: "{{ remote_user }}"
+    user: "{{ ansible_user }}"
     minute: "33"
     hour: "3"

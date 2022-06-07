@@ -1,6 +1,6 @@
 ---
 
-remote_user: "{{ carthonasi_user }}"
+ansible_user: "{{ carthonasi_user }}"
 ansible_become_pass: "{{ carthonasi_become_password }}"
 restic_backup_dir: "{{ carthonasi_restic_backup_dir }}"
 fileshare_mounts: "{{ carthonasi_nfs_mounts }}"
