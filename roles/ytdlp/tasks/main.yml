@@ -1,13 +1,16 @@
 ---
 
 - name: "Install pre-requisites."
-  become: true
   include_tasks: install-prereqs.yml
+  vars:
+    ansible_become: true
 
 - name: "Deploy yt-dlp."
-  become: true
   include_tasks: install-yt-dlp.yml
+  vars:
+    ansible_become: true
 
 - name: "Configure yt-dlp."
-  become: true
   include_tasks: configure-yt-dlp.yml
+  vars:
+    ansible_become: true
