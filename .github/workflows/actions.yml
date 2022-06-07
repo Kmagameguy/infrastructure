@@ -20,7 +20,7 @@ jobs:
         uses: ansible/ansible-lint-action@main
         with:
           targets: "./run.yml"
-          path: "./.ansible-lint"
+          path: "./.config/ansible-lint.yml"
           override-deps: |
             rich>=9.5.1,<11.0.0
 
@@ -32,6 +32,6 @@ jobs:
         uses: karancode/yamllint-github-action@master
         with:
           yamllint_file_or_dir: '.'
-          yamllint_config_filepath: './.yamllint'
+          yamllint_config_filepath: './.config/yamllint.yml'
           yamllint_strict: false
           yamllint_comment: true
