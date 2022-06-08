@@ -8,6 +8,24 @@ docker_users:
 
 appdata_path: "/home/{{ matrix_user }}/appdata"
 containers:
+  - service_name: mealie
+    container_name: mealie
+    image: hkotel/mealie:latest
+    active: true
+    ports:
+      - "{{ secret_mealie_port }}:{{ secret_mealie_port2 }}"
+    include_global_env_vars: true
+    environment:
+      - RECIPE_PUBLIC=true
+      - RECIPE_SHOW_NUTRITION=true
+      - RECIPE_SHOW_ASSETS=true
+      - RECIPE_LANDSCAPE_VIEW=true
+      - RECIPE_DISABLE_COMMENTS=false
+      - RECIPE_DISABLE_AMOUNT=false
+    volumes:
+      - "{{ appdata_path }}/mealie:/app/data"
+    restart: unless-stopped
+  ###
   - service_name: paperless-ngx
     container_name: paperless-ngx
     image: lscr.io/linuxserver/paperless-ngx:latest
