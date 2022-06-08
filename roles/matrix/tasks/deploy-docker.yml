@@ -17,6 +17,7 @@
     - homer
     - jellyfin
     - mariadb
+    - mealie
     - paperless-ngx
     - podgrab
     - postgresql
