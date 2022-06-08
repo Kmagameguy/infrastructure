@@ -17,7 +17,7 @@
     - homer
     - jellyfin
     - mariadb
-    - paperless-ng
+    - paperless-ngx
     - podgrab
     - postgresql
     - scrutiny
