@@ -22,6 +22,7 @@
     - podgrab
     - postgresql
     - scrutiny
+    - influxdb
     - uptime-kuma
 
 - name: deploy homer assets

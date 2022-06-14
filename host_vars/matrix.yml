@@ -96,21 +96,20 @@ containers:
   ###
   - service_name: scrutiny
     container_name: scrutiny
-    image: ghcr.io/linuxserver/scrutiny:8e34ef8d-ls35
+    image: ghcr.io/analogj/scrutiny:master-omnibus
     active: true
     privileged: true
     cap_add:
       - SYS_RAWIO
       - SYS_ADMIN
     include_global_env_vars: true
-    environment:
-      - SCRUTINY_WEB=true
-      - SCRUTINY_COLLECTOR=true
     volumes:
-      - "{{ appdata_path }}/scrutiny:/config"
+      - "{{ appdata_path }}/scrutiny:/opt/scrutiny/config"
+      - "{{ appdata_path }}/influxdb:/opt/scrutiny/influxdb"
       - /run/udev:/run/udev:ro
     ports:
       - "{{ secret_scrutiny_host_port }}:{{ secret_scrutiny_client_port }}"
+      - "{{ secret_influxdb_port }}:{{ secret_influxdb_port }}"
     devices: "{{ matrix_all_disks }}"
     restart: unless-stopped
   ###
